@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>我的主页</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}
+html,body{height:100%}
+body{background:#f8f9fa;color:#222;transition:.3s;background-size:cover;background-position:center;background-attachment:fixed}
+.dark{background:#121212;color:#eee}
+
+.container{max-width:900px;margin:0 auto;padding:20px 15px 40px;min-height:100vh}
+
+/* 顶部固定按钮 */
+.top-bar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px;z-index:999}
+.setting-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.7);border:none;font-size:18px;backdrop-filter:blur(10px);cursor:pointer}
+.dark .setting-btn{background:rgba(40,40,40,0.7)}
+.add-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.7);border:none;font-size:22px;backdrop-filter:blur(10px);cursor:pointer}
+.dark .add-btn{background:rgba(40,40,40,0.7)}
+
+/* 时间 */
+.time-box{text-align:center;margin:70px 0 24px}
+.time{font-size:46px;font-weight:300}
+.date{font-size:16px;color:#666;margin-top:6px}
+.dark .date{color:#aaa}
+
+/* 搜索 */
+.search-wrap{background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-radius:20px;padding:20px;margin-bottom:20px}
+.dark .search-wrap{background:rgba(30,30,30,0.85)}
+.engine-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.engine-btn{padding:6px 10px;border-radius:12px;border:none;font-size:13px;cursor:pointer;background:#eaeaea}
+.dark .engine-btn{background:#333}
+.engine-btn.active{background:#4285f4;color:#fff}
+.search-bar{display:flex;gap:10px}
+#search-input{flex:1;border:none;border-radius:14px;padding:14px 16px;outline:none;background:#fff;font-size:15px}
+.dark #search-input{background:#252525;color:#fff}
+#search-btn{border:none;background:#4285f4;color:#fff;border-radius:14px;padding:0 16px}
+
+/* 图标网格 */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:400px){.grid{grid-template-columns:repeat(3,1fr)}}
+.site{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:16px;background:rgba(255,255,255,0.8);text-decoration:none;color:#222;position:relative}
+.dark .site{background:rgba(40,40,40,0.8);color:#eee}
+.site img{width:36px;height:36px;border-radius:12px;object-fit:cover}
+.site .name{font-size:12px;text-align:center;line-height:1.2}
+.del{position:absolute;top:6px;right:6px;width:18px;height:18px;background:#ef4444;color:#fff;border:none;border-radius:50%;font-size:12px;display:none;align-items:center;justify-content:center}
+.site:hover .del{display:flex}
+
+/* 设置弹窗 */
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center;z-index:9999}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:320px}
+.dark .modal-box{background:#222}
+.modal-title{font-size:18px;font-weight:600;margin-bottom:16px}
+.modal-item{padding:14px 12px;border-radius:12px;background:#f5f5f5;margin-bottom:10px;cursor:pointer}
+.dark .modal-item{background:#333}
+.modal-input{width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;display:none}
+.dark .modal-input{background:#333;color:#fff}
+.modal-input.show{display:block}
+
+/* 添加弹窗 */
+.add-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center;z-index:9999}
+.add-modal.show{display:flex}
+.add-box{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:320px}
+.dark .add-box{background:#222}
+.add-input{width:100%;border:none;border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.dark .add-input{background:#333;color:#fff}
+.add-actions{display:flex;gap:10px;margin-top:10px}
+.add-actions button{flex:1;border:none;border-radius:12px;padding:12px}
+.btn-cancel{background:#eee}
+.dark .btn-cancel{background:#444}
+.btn-ok{background:#4285f4;color:#fff}
+</style>
+</head>
+
+<body>
+
+<!-- 顶部按钮 -->
+<div class="top-bar">
+  <button class="setting-btn" id="settingBtn">⚙️</button>
+  <button class="add-btn" id="addBtn">+</button>
+</div>
+
+<div class="container">
+  <div class="time-box">
+    <div class="time" id="time">00:00</div>
+    <div class="date" id="date">2025-01-01 星期三</div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="engine-row">
+      <button class="engine-btn active" data-e="baidu">百度</button>
+      <button class="engine-btn" data-e="google">谷歌</button>
+      <button class="engine-btn" data-e="bing">必应</button>
+    </div>
+    <div class="search-bar">
+      <input id="search-input" placeholder="搜索或输入网址">
+      <button id="search-btn">搜索</button>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- 设置弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-title">设置</div>
+    <div class="modal-item" id="darkMode">深色模式</div>
+    <div class="modal-item" id="randomBg">随机壁纸</div>
+    <div class="modal-item" id="customBg">自定义壁纸（输入图片链接）</div>
+    <input class="modal-input" id="bgUrl" placeholder="https://xxx.jpg/png">
+  </div>
+</div>
+
+<!-- 添加网站弹窗 -->
+<div class="add-modal" id="addModal">
+  <div class="add-box">
+    <input class="add-input" id="siteName" placeholder="网站名称">
+    <input class="add-input" id="siteUrl" placeholder="网址 https://">
+    <div class="add-actions">
+      <button class="btn-cancel" id="addCancel">取消</button>
+      <button class="btn-ok" id="addOk">确定</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "myHomeSites";
+let engine = "baidu";
+
+// 时间
+function updateTime(){
+  const d = new Date();
+  document.getElementById("time").innerText = d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  const weeks = ["日","一","二","三","四","五","六"];
+  document.getElementById("date").innerText = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${weeks[d.getDay()]}`;
+}
+setInterval(updateTime,1000);
+updateTime();
+
+// 搜索
+document.querySelectorAll(".engine-btn").forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll(".engine-btn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    engine = b.dataset.e;
+  }
+});
+function search(){
+  const v = document.getElementById("search-input").value.trim();
+  if(!v)return;
+  if(v.startsWith("http")) return window.open(v);
+  let url;
+  if(engine==="google") url="https://google.com/search?q="+encodeURIComponent(v);
+  else if(engine==="bing") url="https://bing.com/search?q="+encodeURIComponent(v);
+  else url="https://baidu.com/s?wd="+encodeURIComponent(v);
+  window.open(url);
+}
+document.getElementById("search-btn").onclick=search;
+document.getElementById("search-input").onkeydown=e=>e.key==="Enter"&&search();
+
+// 图标
+function getIcon(url){
+  try{return `https://favicon.im/${new URL(url).host}/32.png`}catch(e){return ""}
+}
+
+// 网站数据
+function getSites(){
+  const def=[
+    {n:"百度",u:"https://www.baidu.com"},
+    {n:"B站",u:"https://www.bilibili.com"},
+    {n:"知乎",u:"https://www.zhihu.com"},
+    {n:"GitHub",u:"https://github.com"}
+  ];
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||def}catch{return def}
+}
+function saveSites(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s));render()}
+function render(){
+  const g=document.getElementById("grid");g.innerHTML="";
+  getSites().forEach((it,i)=>{
+    const a=document.createElement("a");a.className="site";a.target="_blank";a.href=it.u;
+    a.innerHTML=`<button class="del" onclick="del(${i})">×</button><img src="${getIcon(it.u)}"><div class="name">${it.n}</div>`;
+    g.appendChild(a);
+  });
+}
+function del(i){const list=getSites();list.splice(i,1);saveSites(list);}
+
+// 添加弹窗
+document.getElementById("addBtn").onclick=()=>{
+  document.getElementById("addModal").classList.add("show");
+  document.getElementById("siteName").value="";
+  document.getElementById("siteUrl").value="";
+}
+document.getElementById("addCancel").onclick=()=>{
+  document.getElementById("addModal").classList.remove("show");
+}
+document.getElementById("addOk").onclick=()=>{
+  const n=document.getElementById("siteName").value.trim();
+  const u=document.getElementById("siteUrl").value.trim();
+  if(!n||!u)return alert("请填写名称和网址");
+  const list=getSites();list.push({n,u});saveSites(list);
+  document.getElementById("addModal").classList.remove("show");
+}
+
+// 设置弹窗
+document.getElementById("settingBtn").onclick=()=>{
+  document.getElementById("modal").classList.add("show");
+}
+document.getElementById("modal").onclick=(e)=>{
+  if(e.target===document.getElementById("modal")) document.getElementById("modal").classList.remove("show");
+}
+
+// 深色模式
+document.getElementById("darkMode").onclick=()=>{
+  document.body.classList.toggle("dark");
+  localStorage.setItem("dark", document.body.classList.contains("dark"));
+}
+if(localStorage.getItem("dark")==="true") document.body.classList.add("dark");
+
+// 随机壁纸
+document.getElementById("randomBg").onclick=()=>{
+  const id=Math.floor(Math.random()*1000);
+  const url=`https://picsum.photos/1280/1280?random=${id}`;
+  document.body.style.backgroundImage=`url(${url})`;
+  localStorage.setItem("bg",document.body.style.backgroundImage);
+  document.getElementById("modal").classList.remove("show");
+}
+
+// 自定义壁纸
+document.getElementById("customBg").onclick=()=>{
+  document.getElementById("bgUrl").classList.add("show");
+  document.getElementById("bgUrl").onkeydown=e=>{
+    if(e.key==="Enter"){
+      const u=document.getElementById("bgUrl").value.trim();
+      if(u){document.body.style.backgroundImage=`url(${u})`;localStorage.setItem("bg",document.body.style.backgroundImage)}
+      document.getElementById("bgUrl").classList.remove("show");
+      document.getElementById("modal").classList.remove("show");
+    }
+  }
+}
+
+// 恢复壁纸
+const savedBg=localStorage.getItem("bg");
+if(savedBg) document.body.style.backgroundImage=savedBg;
+
+render();
+</script>
+</body>
+</html>
