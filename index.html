@@ -10,14 +10,21 @@ html,body{height:100%}
 body{background:#f8f9fa;color:#222;transition:.3s;background-size:cover;background-position:center;background-attachment:fixed}
 .dark{background:#121212;color:#eee}
 
-.container{max-width:900px;margin:0 auto;padding:20px 15px 40px;min-height:100vh}
+/* 锁屏 */
+.lock{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:99999}
+.dark .lock{background:#121212}
+.lock-box{width:90%;max-width:320px;text-align:center}
+.lock-title{font-size:20px;margin-bottom:20px}
+.lock-input{width:100%;border:1px solid #ddd;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;font-size:16px}
+.dark .lock-input{background:#222;color:#fff;border-color:#444}
+.lock-btn{background:#4285f4;color:#fff;border:none;border-radius:12px;padding:14px;width:100%}
 
-/* 顶部固定按钮 */
+/* 顶部按钮 */
 .top-bar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:16px;z-index:999}
-.setting-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.7);border:none;font-size:18px;backdrop-filter:blur(10px);cursor:pointer}
-.dark .setting-btn{background:rgba(40,40,40,0.7)}
-.add-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.7);border:none;font-size:22px;backdrop-filter:blur(10px);cursor:pointer}
-.dark .add-btn{background:rgba(40,40,40,0.7)}
+.setting-btn,.add-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.7);border:none;font-size:18px;backdrop-filter:blur(10px);cursor:pointer}
+.dark .setting-btn,.dark .add-btn{background:rgba(40,40,40,0.7)}
+
+.container{max-width:900px;margin:0 auto;padding:20px 15px 40px;min-height:100vh}
 
 /* 时间 */
 .time-box{text-align:center;margin:70px 0 24px}
@@ -37,49 +44,56 @@ body{background:#f8f9fa;color:#222;transition:.3s;background-size:cover;backgrou
 .dark #search-input{background:#252525;color:#fff}
 #search-btn{border:none;background:#4285f4;color:#fff;border-radius:14px;padding:0 16px}
 
-/* 图标网格 */
+/* 分类 */
+.category{margin-bottom:24px}
+.cat-title{font-size:14px;color:#666;margin-bottom:10px;padding-left:4px}
+.dark .cat-title{color:#aaa}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:400px){.grid{grid-template-columns:repeat(3,1fr)}}
-.site{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:16px;background:rgba(255,255,255,0.8);text-decoration:none;color:#222;position:relative}
-.dark .site{background:rgba(40,40,40,0.8);color:#eee}
-.site img{width:36px;height:36px;border-radius:12px;object-fit:cover}
-.site .name{font-size:12px;text-align:center;line-height:1.2}
-.del{position:absolute;top:6px;right:6px;width:18px;height:18px;background:#ef4444;color:#fff;border:none;border-radius:50%;font-size:12px;display:none;align-items:center;justify-content:center}
-.site:hover .del{display:flex}
 
-/* 设置弹窗 */
-.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center;z-index:9999}
+.site,.folder{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:16px;background:rgba(255,255,255,0.8);text-decoration:none;color:#222;position:relative;cursor:pointer}
+.dark .site,.dark .folder{background:rgba(40,40,40,0.8);color:#eee}
+.site img,.folder img{width:36px;height:36px;border-radius:12px;object-fit:cover}
+.site .name,.folder .name{font-size:12px;text-align:center;line-height:1.2}
+.del{position:absolute;top:6px;right:6px;width:18px;height:18px;background:#ef4444;color:#fff;border:none;border-radius:50%;font-size:12px;display:none;align-items:center;justify-content:center}
+.site:hover .del,.folder:hover .del{display:flex}
+
+/* 弹窗 */
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal.show{display:flex}
 .modal-box{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:320px}
 .dark .modal-box{background:#222}
-.modal-title{font-size:18px;font-weight:600;margin-bottom:16px}
-.modal-item{padding:14px 12px;border-radius:12px;background:#f5f5f5;margin-bottom:10px;cursor:pointer}
+.modal-title{font-size:18px;margin-bottom:16px}
+.modal-item{padding:14px;border-radius:12px;background:#f5f5f5;margin-bottom:10px;cursor:pointer}
 .dark .modal-item{background:#333}
-.modal-input{width:100%;border:none;border-radius:12px;padding:12px 14px;margin-top:10px;display:none}
+.modal-input{width:100%;border:none;border-radius:12px;padding:12px;margin-bottom:10px}
 .dark .modal-input{background:#333;color:#fff}
-.modal-input.show{display:block}
-
-/* 添加弹窗 */
-.add-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center;z-index:9999}
-.add-modal.show{display:flex}
-.add-box{background:#fff;border-radius:20px;padding:24px;width:90%;max-width:320px}
-.dark .add-box{background:#222}
-.add-input{width:100%;border:none;border-radius:12px;padding:12px 14px;margin-bottom:10px}
-.dark .add-input{background:#333;color:#fff}
-.add-actions{display:flex;gap:10px;margin-top:10px}
-.add-actions button{flex:1;border:none;border-radius:12px;padding:12px}
+.modal-actions{display:flex;gap:10px}
+.modal-actions button{flex:1;border:none;border-radius:12px;padding:12px}
 .btn-cancel{background:#eee}
 .dark .btn-cancel{background:#444}
 .btn-ok{background:#4285f4;color:#fff}
+
+.textarea{width:100%;height:120px;border-radius:12px;padding:10px;margin-bottom:10px}
+.dark .textarea{background:#333;color:#fff;border:none}
 </style>
 </head>
 
 <body>
 
-<!-- 顶部按钮 -->
+<!-- 锁屏 -->
+<div class="lock" id="lock">
+  <div class="lock-box">
+    <div class="lock-title">请输入密码</div>
+    <input class="lock-input" id="lockInput" type="password" placeholder="密码">
+    <button class="lock-btn" onclick="unlock()">解锁</button>
+  </div>
+</div>
+
+<!-- 顶部 -->
 <div class="top-bar">
-  <button class="setting-btn" id="settingBtn">⚙️</button>
-  <button class="add-btn" id="addBtn">+</button>
+  <button class="setting-btn" onclick="openModal('settingModal')">⚙️</button>
+  <button class="add-btn" onclick="openModal('addModal')">+</button>
 </div>
 
 <div class="container">
@@ -100,45 +114,135 @@ body{background:#f8f9fa;color:#222;transition:.3s;background-size:cover;backgrou
     </div>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div id="content"></div>
 </div>
 
-<!-- 设置弹窗 -->
-<div class="modal" id="modal">
+<!-- 设置 -->
+<div class="modal" id="settingModal">
   <div class="modal-box">
     <div class="modal-title">设置</div>
-    <div class="modal-item" id="darkMode">深色模式</div>
-    <div class="modal-item" id="randomBg">随机壁纸</div>
-    <div class="modal-item" id="customBg">自定义壁纸（输入图片链接）</div>
-    <input class="modal-input" id="bgUrl" placeholder="https://xxx.jpg/png">
+    <div class="modal-item" onclick="toggleDark()">深色模式</div>
+    <div class="modal-item" onclick="randomBg()">随机壁纸</div>
+    <div class="modal-item" onclick="openModal('bgModal')">自定义壁纸</div>
+    <div class="modal-item" onclick="openModal('pwdModal')">修改密码</div>
+    <div class="modal-item" onclick="openModal('exportModal')">导入导出</div>
+    <div class="modal-item" onclick="closeAllModal()">关闭</div>
   </div>
 </div>
 
-<!-- 添加网站弹窗 -->
-<div class="add-modal" id="addModal">
-  <div class="add-box">
-    <input class="add-input" id="siteName" placeholder="网站名称">
-    <input class="add-input" id="siteUrl" placeholder="网址 https://">
-    <div class="add-actions">
-      <button class="btn-cancel" id="addCancel">取消</button>
-      <button class="btn-ok" id="addOk">确定</button>
+<!-- 自定义壁纸 -->
+<div class="modal" id="bgModal">
+  <div class="modal-box">
+    <div class="modal-title">自定义壁纸</div>
+    <input class="modal-input" id="bgUrl" placeholder="图片URL">
+    <div class="modal-actions">
+      <button onclick="closeAllModal()">取消</button>
+      <button onclick="setCustomBg()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 添加 -->
+<div class="modal" id="addModal">
+  <div class="modal-box">
+    <div class="modal-title">添加</div>
+    <input class="modal-input" id="addName" placeholder="名称">
+    <input class="modal-input" id="addUrl" placeholder="网址（留空=文件夹）">
+    <div class="modal-actions">
+      <button onclick="closeAllModal()">取消</button>
+      <button onclick="addItem()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 密码 -->
+<div class="modal" id="pwdModal">
+  <div class="modal-box">
+    <div class="modal-title">修改密码</div>
+    <input class="modal-input" id="newPwd" type="password" placeholder="新密码">
+    <div class="modal-actions">
+      <button onclick="closeAllModal()">取消</button>
+      <button onclick="setPwd()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导入导出 -->
+<div class="modal" id="exportModal">
+  <div class="modal-box">
+    <div class="modal-title">配置</div>
+    <textarea class="textarea" id="configText"></textarea>
+    <div class="modal-actions">
+      <button onclick="loadConfig()">导入</button>
+      <button onclick="copyConfig()">复制导出</button>
     </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = "myHomeSites";
+// 数据结构
+const VERSION = "1";
+const STORAGE = {
+  pwd: "home_pwd",
+  data: "home_data",
+  dark: "home_dark",
+  bg: "home_bg"
+};
+
 let engine = "baidu";
+let unlocked = false;
 
 // 时间
 function updateTime(){
   const d = new Date();
-  document.getElementById("time").innerText = d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-  const weeks = ["日","一","二","三","四","五","六"];
-  document.getElementById("date").innerText = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${weeks[d.getDay()]}`;
+  document.getElementById("time").innerText = d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  const w = "日一二三四五六".split("");
+  document.getElementById("date").innerText = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${w[d.getDay()]}`;
 }
 setInterval(updateTime,1000);
 updateTime();
+
+// 锁屏
+function checkLock(){
+  if(!localStorage.getItem(STORAGE.pwd)){
+    localStorage.setItem(STORAGE.pwd, "1234");
+  }
+  document.getElementById("lock").style.display = unlocked ? "none" : "flex";
+}
+function unlock(){
+  const v = document.getElementById("lockInput").value;
+  if(v === localStorage.getItem(STORAGE.pwd)){
+    unlocked = true;
+    checkLock();
+  }else{
+    alert("密码错误");
+  }
+}
+
+// 深色
+function toggleDark(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem(STORAGE.dark, document.body.classList.contains("dark"));
+}
+if(localStorage.getItem(STORAGE.dark)==="true") document.body.classList.add("dark");
+
+// 壁纸
+function randomBg(){
+  const u = `https://picsum.photos/1280/1280?random=${Math.random()}`;
+  document.body.style.backgroundImage = `url(${u})`;
+  localStorage.setItem(STORAGE.bg, document.body.style.backgroundImage);
+  closeAllModal();
+}
+function setCustomBg(){
+  const u = document.getElementById("bgUrl").value.trim();
+  if(u){
+    document.body.style.backgroundImage = `url(${u})`;
+    localStorage.setItem(STORAGE.bg, document.body.style.backgroundImage);
+  }
+  closeAllModal();
+}
+const bg = localStorage.getItem(STORAGE.bg);
+if(bg) document.body.style.backgroundImage = bg;
 
 // 搜索
 document.querySelectorAll(".engine-btn").forEach(b=>{
@@ -161,91 +265,127 @@ function search(){
 document.getElementById("search-btn").onclick=search;
 document.getElementById("search-input").onkeydown=e=>e.key==="Enter"&&search();
 
-// 图标
-function getIcon(url){
-  try{return `https://favicon.im/${new URL(url).host}/32.png`}catch(e){return ""}
-}
-
-// 网站数据
-function getSites(){
-  const def=[
-    {n:"百度",u:"https://www.baidu.com"},
-    {n:"B站",u:"https://www.bilibili.com"},
-    {n:"知乎",u:"https://www.zhihu.com"},
-    {n:"GitHub",u:"https://github.com"}
-  ];
-  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||def}catch{return def}
-}
-function saveSites(s){localStorage.setItem(STORAGE_KEY,JSON.stringify(s));render()}
-function render(){
-  const g=document.getElementById("grid");g.innerHTML="";
-  getSites().forEach((it,i)=>{
-    const a=document.createElement("a");a.className="site";a.target="_blank";a.href=it.u;
-    a.innerHTML=`<button class="del" onclick="del(${i})">×</button><img src="${getIcon(it.u)}"><div class="name">${it.n}</div>`;
-    g.appendChild(a);
-  });
-}
-function del(i){const list=getSites();list.splice(i,1);saveSites(list);}
-
-// 添加弹窗
-document.getElementById("addBtn").onclick=()=>{
-  document.getElementById("addModal").classList.add("show");
-  document.getElementById("siteName").value="";
-  document.getElementById("siteUrl").value="";
-}
-document.getElementById("addCancel").onclick=()=>{
-  document.getElementById("addModal").classList.remove("show");
-}
-document.getElementById("addOk").onclick=()=>{
-  const n=document.getElementById("siteName").value.trim();
-  const u=document.getElementById("siteUrl").value.trim();
-  if(!n||!u)return alert("请填写名称和网址");
-  const list=getSites();list.push({n,u});saveSites(list);
-  document.getElementById("addModal").classList.remove("show");
-}
-
-// 设置弹窗
-document.getElementById("settingBtn").onclick=()=>{
-  document.getElementById("modal").classList.add("show");
-}
-document.getElementById("modal").onclick=(e)=>{
-  if(e.target===document.getElementById("modal")) document.getElementById("modal").classList.remove("show");
-}
-
-// 深色模式
-document.getElementById("darkMode").onclick=()=>{
-  document.body.classList.toggle("dark");
-  localStorage.setItem("dark", document.body.classList.contains("dark"));
-}
-if(localStorage.getItem("dark")==="true") document.body.classList.add("dark");
-
-// 随机壁纸
-document.getElementById("randomBg").onclick=()=>{
-  const id=Math.floor(Math.random()*1000);
-  const url=`https://picsum.photos/1280/1280?random=${id}`;
-  document.body.style.backgroundImage=`url(${url})`;
-  localStorage.setItem("bg",document.body.style.backgroundImage);
-  document.getElementById("modal").classList.remove("show");
-}
-
-// 自定义壁纸
-document.getElementById("customBg").onclick=()=>{
-  document.getElementById("bgUrl").classList.add("show");
-  document.getElementById("bgUrl").onkeydown=e=>{
-    if(e.key==="Enter"){
-      const u=document.getElementById("bgUrl").value.trim();
-      if(u){document.body.style.backgroundImage=`url(${u})`;localStorage.setItem("bg",document.body.style.backgroundImage)}
-      document.getElementById("bgUrl").classList.remove("show");
-      document.getElementById("modal").classList.remove("show");
+// 数据
+function getDefaultData(){
+  return [
+    {
+      name: "常用",
+      list: [
+        {name:"百度",url:"https://www.baidu.com"},
+        {name:"B站",url:"https://www.bilibili.com"},
+        {name:"知乎",url:"https://www.zhihu.com"}
+      ]
     }
+  ];
+}
+function getData(){
+  try{
+    return JSON.parse(localStorage.getItem(STORAGE.data)) || getDefaultData();
+  }catch(e){
+    return getDefaultData();
   }
 }
+function saveData(d){
+  localStorage.setItem(STORAGE.data, JSON.stringify(d));
+  render();
+}
 
-// 恢复壁纸
-const savedBg=localStorage.getItem("bg");
-if(savedBg) document.body.style.backgroundImage=savedBg;
+// 图标
+function favicon(u){
+  try{return `https://favicon.im/${new URL(u).host}/32.png`}catch{return ""}
+}
 
+// 渲染
+function render(){
+  const data = getData();
+  const c = document.getElementById("content");
+  c.innerHTML = "";
+  data.forEach((cat, i)=>{
+    const div = document.createElement("div");
+    div.className = "category";
+    div.innerHTML = `<div class="cat-title">${cat.name}</div>`;
+    const g = document.createElement("div");
+    g.className = "grid";
+    cat.list.forEach((it, j)=>{
+      const item = document.createElement(it.url ? "a" : "div");
+      item.className = it.url ? "site" : "folder";
+      if(it.url) item.href = it.url, item.target = "_blank";
+      item.innerHTML = `
+        <button class="del" onclick="delItem(${i},${j})">×</button>
+        <img src="${favicon(it.url)}">
+        <div class="name">${it.name}</div>
+      `;
+      g.appendChild(item);
+    });
+    div.appendChild(g);
+    c.appendChild(div);
+  });
+}
+
+// 添加
+function addItem(){
+  const n = document.getElementById("addName").value.trim();
+  const u = document.getElementById("addUrl").value.trim();
+  if(!n) return alert("请输入名称");
+  const d = getData();
+  if(!d.length) d.push({name:"默认",list:[]});
+  d[0].list.push({name:n, url:u});
+  saveData(d);
+  closeAllModal();
+}
+
+// 删除
+function delItem(c,i){
+  const d = getData();
+  d[c].list.splice(i,1);
+  saveData(d);
+}
+
+// 密码
+function setPwd(){
+  const v = document.getElementById("newPwd").value.trim();
+  if(v){
+    localStorage.setItem(STORAGE.pwd, v);
+    alert("已修改");
+  }
+  closeAllModal();
+}
+
+// 导入导出
+function copyConfig(){
+  const t = document.getElementById("configText");
+  t.value = localStorage.getItem(STORAGE.data) || "";
+  t.select();
+  document.execCommand("copy");
+  alert("已复制配置");
+}
+function loadConfig(){
+  const t = document.getElementById("configText").value.trim();
+  if(t){
+    try{
+      JSON.parse(t);
+      localStorage.setItem(STORAGE.data, t);
+      render();
+      alert("导入成功");
+    }catch(e){
+      alert("格式错误");
+    }
+  }
+  closeAllModal();
+}
+
+// 弹窗
+function openModal(id){
+  closeAllModal();
+  document.getElementById(id).classList.add("show");
+}
+function closeAllModal(){
+  document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"));
+}
+
+// 初始化
 render();
+checkLock();
 </script>
 </body>
 </html>
